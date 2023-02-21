@@ -60,13 +60,13 @@ class PostController extends Controller
 
     if ($temp_file)
     {
-      Storage::copy('public/posts/tmp/' . $temp_file->folder . '/' . $temp_file->file, 'public/posts/' . $temp_file->folder . '/' . $temp_file->file);
+      Storage::copy('posts/tmp/' . $temp_file->folder . '/' . $temp_file->file, 'posts/' . $temp_file->folder . '/' . $temp_file->file);
 
       Post::create([
         'title' => $request->title,
         'image' => $temp_file->folder . '/' . $temp_file->file,
       ]);
-      Storage::deleteDirectory('public/posts/tmp/' . $temp_file->folder);
+      Storage::deleteDirectory('posts/tmp/' . $temp_file->folder);
       $temp_file->delete();
 
       return to_route('posts.index')->with('success', 'Post Created');
@@ -84,7 +84,7 @@ class PostController extends Controller
       $image     = $request->file('image');
       $file_name = $image->getClientOriginalName();
       $folder    = uniqid('post', true);
-      $image->storeAs('public/posts/tmp/' . $folder, $file_name);
+      $image->storeAs('posts/tmp/' . $folder, $file_name);
       TemporaryFile::create([
         'folder' => $folder,
         'file'   => $file_name,
@@ -101,6 +101,7 @@ class PostController extends Controller
   public function tempDelete()
   {
     $temp_file = TemporaryFile::where('folder', request()->getContent())->first();
+    
     if ($temp_file)
     {
       Storage::deleteDirectory('public/posts/tmp/' . $temp_file->folder);

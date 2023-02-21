@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::post('post/store', [PostController::class, 'store'])->name('post.store');
+Route::post('post/store', [PostController::class, 'store'])->name('posts.store');
 
 Route::post('/temp-upload', [PostController::class, 'tempUplaod']);
 Route::delete('/temp-delete', [PostController::class, 'tempDelete']);

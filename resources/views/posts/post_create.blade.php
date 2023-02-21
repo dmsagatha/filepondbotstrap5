@@ -1,96 +1,86 @@
-<!doctype html>
-<html lang="{{ config('app.locale') }}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon-32x32.png') }}">
-    <title>Imagen con Filepond</title>
+@extends('layouts.app')
 
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
-    
-    @vite(['resources/js/app.js', 'resources/css/app.scss'])
-  </head>
-  <body>
-    <div class="container py-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">Create Post</h4>
-            </div>
-            <div class="card-body">
-              @if (session()->has('success'))
-                <div class="alert alert-success" role="alert">
-                  {{ session()->get('success') }}
-                </div>
-              @endif
-              @if (session()->has('error'))
-                <div class="alert alert-danger" role="alert">
-                  {{ session()->get('error') }}
-                </div>
-              @endif
-              <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                  <label for="">Title</label>
-                  <input type="text" name="title" class="form-control">
-                  @error('title')
-                    <span class="text-danger">{{ $message }}</span>
-                  @enderror
-                </div>
-                <div class="mb-3">
-                  <label for="">Upload Image</label>
-                  <input type="file" name="image" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
-            </div>
+@section('title')
+   Lista de Posts
+@endsection
+
+@section('content')
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Crear Post</h4>
+          </div>
+          <div class="card-body">
+            @if (session()->has('success'))
+              <div class="alert alert-success" role="alert">
+                {{ session()->get('success') }}
+              </div>
+            @endif
+            @if (session()->has('error'))
+              <div class="alert alert-danger" role="alert">
+                {{ session()->get('error') }}
+              </div>
+            @endif
+
+            <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
+              @csrf
+              <div class="mb-3">
+                <label for="">Título</label>
+                <input type="text" name="title" class="form-control">
+                @error('title')
+                  <span class="text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="mb-3">
+                <label for="">Subir imagen</label>
+                <input type="file" name="image" class="form-control">
+              </div>
+
+              <button type="submit" class="btn btn-primary">Guardar Post</button>
+            </form>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="row justify-content-center mt-5">
-        @foreach ($posts as $key => $post)
-          <div class="col-8 col-sm-4 col-md-3">
-            <div class="card">
-              <img src="{{ Storage::disk('public')->url('posts/' . $post->image) }}" alt="" title="" />
-              <div class="card-body">
-                <h5 class="card-title">{{ $post->title }}</h5>
-              </div>
+    <div class="row justify-content-center mt-5">
+      @foreach ($posts as $key => $post)
+        <div class="col-8 col-sm-4 col-md-3">
+          <div class="card">
+            <img src="{{ Storage::disk('public')->url('posts/' . $post->image) }}" alt="" title="" />
+            <div class="card-body">
+              <h5 class="card-title">{{ $post->title }}</h5>
             </div>
           </div>
-        @endforeach
-
-      </div>
+        </div>
+      @endforeach
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  </div>
+@endsection
 
-    <!-- Load FilePond library -->
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+@push('scripts')
+  <script>
+    // Register the plugin
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    // Get a reference to the file input element
+    const inputElement = document.querySelector('input[type="file"]');
 
-    <script>
-      // Register the plugin
-      FilePond.registerPlugin(FilePondPluginImagePreview);
-      // Get a reference to the file input element
-      const inputElement = document.querySelector('input[type="file"]');
+    // Create a FilePond instance
+    const pond = FilePond.create(inputElement);
 
-      // Create a FilePond instance
-      const pond = FilePond.create(inputElement);
-
-      FilePond.setOptions({
-        server: {
-          process: './temp-upload',
-          revert: './temp-delete',
-          headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-          }
+    FilePond.setOptions({
+      server: {
+        process: './temp-upload',
+        revert: './temp-delete',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
         }
-      });
-    </script>
-  </body>
-</html>
+      }
+    });
+  </script>
+@endpush

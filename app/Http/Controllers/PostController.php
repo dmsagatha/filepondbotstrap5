@@ -19,7 +19,7 @@ class PostController extends Controller
   {
     $posts = Post::all();
 
-    return view('post_create', compact('posts'));
+    return view('posts.post_create', compact('posts'));
   }
 
   /**
@@ -51,11 +51,11 @@ class PostController extends Controller
       Storage::deleteDirectory('posts/tmp/' . $temp_file->folder);
       $temp_file->delete();
 
-      return redirect('/')->withErrors($validator)->withInput();
+      return to_route('posts.index')->withErrors($validator)->withInput();
     }
     elseif ($validator->fails())
     {
-      return redirect('/')->withErrors($validator)->withInput();
+      return to_route('posts.index')->withErrors($validator)->withInput();
     }
 
     if ($temp_file)
@@ -69,11 +69,11 @@ class PostController extends Controller
       Storage::deleteDirectory('public/posts/tmp/' . $temp_file->folder);
       $temp_file->delete();
 
-      return redirect('/')->with('success', 'Post Created');
+      return to_route('posts.index')->with('success', 'Post Created');
     }
     else
     {
-      return redirect('/')->with('error', 'Please uplaod an image');
+      return to_route('posts.index')->with('error', 'Please uplaod an image');
     }
   }
 

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Route;
   return view('welcome');
 }); */
 
-Route::get('/inicial', function () {
-  return view('app');
+Route::get('/', function () {
+  return view('layouts.app');
 });
 
-Route::get('/', [PostController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::post('post/store', [PostController::class, 'store'])->name('post.store');
 
 Route::post('/temp-upload', [PostController::class, 'tempUplaod']);

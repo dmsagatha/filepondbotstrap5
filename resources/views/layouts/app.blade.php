@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon-32x32.png') }}">
     <title>Instalar Bootstrap 5 en Laravel 9 y Vite | Diario del Programador</title>
     
     @vite(['resources/js/app.js', 'resources/css/app.scss'])

@@ -1,10 +1,14 @@
 <!doctype html>
-<html lang="es">
+<html lang="{{ config('app.locale') }}">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon-32x32.png') }}">
     <title>Instalar Bootstrap 5 en Laravel 9 y Vite | Diario del Programador</title>
+
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
     
     @vite(['resources/js/app.js', 'resources/css/app.scss'])
   </head>
@@ -46,29 +50,15 @@
       </div>
     </nav>
 
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="https://cdn.pixabay.com/photo/2020/11/24/10/37/tokyo-5772125_960_720.jpg" class="d-block w-100"
-            alt="..." height="auto">
-        </div>
-        <div class="carousel-item">
-          <img src="https://cdn.pixabay.com/photo/2022/08/24/15/42/library-7408106_960_720.jpg" class="d-block w-100"
-            alt="..." height="auto">
-        </div>
-        <div class="carousel-item">
-          <img src="https://cdn.pixabay.com/photo/2019/06/16/11/02/turtle-4277518_960_720.jpg" class="d-block w-100"
-            alt="..." height="auto">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+    <div>
+      @yield('content')
     </div>
+
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
+    <!-- Load FilePond library -->
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+    @stack('scripts')
   </body>
 </html>

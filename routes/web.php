@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /* Route::get('/', function () {
@@ -7,5 +8,11 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::get('/', function () {
-  return view('app');
+  return view('layouts.app');
 });
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::post('post/store', [PostController::class, 'store'])->name('posts.store');
+
+Route::post('/temp-upload', [PostController::class, 'tempUplaod']);
+Route::delete('/temp-delete', [PostController::class, 'tempDelete']);
